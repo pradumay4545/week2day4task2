@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Random Users Grid</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f4f4;
+      padding: 20px;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+    }
+
+    .card {
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+
+    .card img {
+      border-radius: 50%;
+      width: 100px;
+      height: 100px;
+      margin-bottom: 10px;
+    }
+
+    button {
+      display: block;
+      margin: 25px auto;
+      padding: 12px 18px;
+      font-size: 16px;
+      background: #007bff;
+      border: none;
+      color: white;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+
+<body>
+
+  <h1>Random Users (5)</h1>
+  <div id="userGrid" class="grid"></div>
+
+  <button onclick="loadUsers()">Load New Users</button>
+
+  <script>
+    async function loadUsers() {
+      const response = await fetch("https://randomuser.me/api/?results=5");
+      const data = await response.json();
+      const users = data.results;
+
+      const userGrid = document.getElementById("userGrid");
+      userGrid.innerHTML = ""; // Clear previous users
+
+      users.forEach(user => {
+        const card = `
+          <div class="card">
+            <img src="${user.picture.large}" alt="User">
+            <h3>${user.name.title} ${user.name.first} ${user.name.last}</h3>
+            <p>${user.email}</p>
+          </div>
+        `;
+        userGrid.innerHTML += card;
+      });
+    }
+
+    // Load default users initially
+    loadUsers();
+  </script>
+
+</body>
+</html>
